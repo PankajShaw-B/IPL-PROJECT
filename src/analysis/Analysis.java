@@ -115,4 +115,21 @@ public class Analysis {
             if (count == 10) break;
         }
     }
+
+    public void totalSixesPerTeam(List<Delivery> deliveries) {
+        HashMap<String, Integer> sixesByTeam = new HashMap<>();
+
+        for (Delivery d : deliveries) {
+            if (d.batsmanRuns == 6) {
+                sixesByTeam.put(d.battingTeam,
+                    sixesByTeam.getOrDefault(d.battingTeam, 0) + 1);
+            }
+        }
+
+        System.out.println("=== Total Sixes Per Team ===");
+        for (Map.Entry<String, Integer> entry : sixesByTeam.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+    }
+    
 }
