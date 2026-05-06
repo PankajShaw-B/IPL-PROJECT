@@ -1,5 +1,8 @@
 package analysis;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -50,4 +53,51 @@ public class Analysis {
         }
     }
 
+    public void top10bowlerEconomy(List<Match> matches, List<Delivery> deliveries) {
+        Set<Integer> matchIdsIn2015 = new HashSet<>();
+        for (Match m : matches) {
+            if (m.season == 2015) {
+                matchIdsIn2015.add(m.id);
+            }
+        }
+
+        
+        HashMap<String, Integer> runsByBowler  = new HashMap<>();
+        HashMap<String, Integer> ballsByBowler = new HashMap<>();
+
+        for (Delivery d : deliveries) {
+            if (matchIdsIn2015.contains(d.matchId)) {
+                runsByBowler.put(d.bowler,
+                        runsByBowler.getOrDefault(d.bowler, 0) + d.totalRuns);
+
+                if (d.wideRuns == 0) {
+                    ballsByBowler.put(d.bowler,
+                            ballsByBowler.getOrDefault(d.bowler, 0) + 1);
+                }
+            }
+        }
+    HashMap<String, Double> economyByBowler = new HashMap<>();
+        for (String bowler : runsByBowler.keySet()) {
+            int runs  = runsByBowler.get(bowler);
+            int balls = ballsByBowler.getOrDefault(bowler, 0);
+            if (balls > 0) {
+                double economy = (runs * 6.0) / balls;
+                economyByBowler.put(bowler, economy);
+            }
+        }
+        List<Map.Entry<String, Double>> sortedList = new ArrayList<>(economyByBowler.entrySet());
+        Collections.sort(sortedList, new Comparator<Map.Entry<String, Double>>() {
+            public int compare(Map.Entry<String, Double> a, Map.Entry<String, Double> b) {
+                return Double.compare(a.getValue(), b.getValue());
+            }
+        });
+
+        System.out.println("=== Top 10 Bowlers by Economy (Season 2015) ===");
+        int count = 0;
+        for (Map.Entry<String, Double> entry : sortedList) {
+            System.out.printf("%-25s -> %.2f%n", entry.getKey(), entry.getValue());
+            count++;
+            if (count == 10) break;
+        }
+    }
 }
