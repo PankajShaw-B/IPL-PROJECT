@@ -22,6 +22,7 @@ public class Main {
         // analysis.matchesWonPerTeam(matches);
         // analysis.extraRunsPerTeam(matches, deliveries);
         // analysis.top10bowlerEconomy(matches, deliveries);
-        analysis.totalSixesPerTeam(deliveries);
+        // analysis.totalSixesPerTeam(deliveries);
+        analysis.topBatsmanStrikeRate(deliveries);
     }
 }

@@ -131,5 +131,40 @@ public class Analysis {
             System.out.println(entry.getKey() + " -> " + entry.getValue());
         }
     }
-    
+
+    public void topBatsmanStrikeRate(List<Delivery> deliveries) {
+
+        HashMap<String, Integer> runs = new HashMap<>();
+        HashMap<String, Integer> balls = new HashMap<>();
+
+        for (Delivery d : deliveries) {
+            runs.put(d.batsman,
+                runs.getOrDefault(d.batsman, 0) + d.batsmanRuns);
+
+            if (d.wideRuns == 0) {
+                balls.put(d.batsman,
+                    balls.getOrDefault(d.batsman, 0) + 1);
+            }
+        }
+
+        HashMap<String, Double> strikeRate = new HashMap<>();
+
+        for (String batsman : runs.keySet()) {
+            int b = balls.getOrDefault(batsman, 0);
+            if (b >= 100) {
+                double sr = (runs.get(batsman) * 100.0) / b;
+                strikeRate.put(batsman, sr);
+            }
+        }
+
+        List<Map.Entry<String, Double>> list = new ArrayList<>(strikeRate.entrySet());
+        Collections.sort(list, (a, b) -> Double.compare(b.getValue(), a.getValue()));
+
+        System.out.println("=== Top 10 Batsmen by Strike Rate ===");
+        int count = 0;
+        for (Map.Entry<String, Double> e : list) {
+            System.out.printf("%-25s -> %.2f%n", e.getKey(), e.getValue());
+            if (++count == 10) break;
+        }
+    }
 }
