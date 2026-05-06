@@ -18,7 +18,8 @@ public class Main {
 
         Analysis analysis = new Analysis();
 
-        analysis.matchesPlayedPerYear(matches);
+        // analysis.matchesPlayedPerYear(matches);
+        analysis.extraRunsPerTeam(matches, deliveries);
         
     }
 }
