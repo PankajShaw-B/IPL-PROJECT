@@ -19,8 +19,9 @@ public class Main {
         Analysis analysis = new Analysis();
 
         // analysis.matchesPlayedPerYear(matches);
+        analysis.matchesWonPerTeam(matches);
         // analysis.extraRunsPerTeam(matches, deliveries);
-        analysis.top10bowlerEconomy(matches, deliveries);
+        // analysis.top10bowlerEconomy(matches, deliveries);
         
     }
 }
