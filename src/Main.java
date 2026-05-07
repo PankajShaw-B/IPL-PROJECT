@@ -23,6 +23,10 @@ public class Main {
         // analysis.extraRunsPerTeam(matches, deliveries);
         // analysis.top10bowlerEconomy(matches, deliveries);
         // analysis.totalSixesPerTeam(deliveries);
-        analysis.topBatsmanStrikeRate(deliveries);
+        // analysis.topBatsmanStrikeRate(deliveries);
+        // analysis.mostRunsFirstFiveOversPerYearPerTeam(matches, deliveries);
+        // analysis.mostRunsFirstFiveOvers(matches, deliveries);
+        analysis.highestStrikeRateAgainstRCB(matches, deliveries);
+        
     }
 }

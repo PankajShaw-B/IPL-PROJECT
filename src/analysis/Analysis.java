@@ -91,7 +91,7 @@ public class Analysis {
                 }
             }
         }
-    HashMap<String, Double> economyByBowler = new HashMap<>();
+        HashMap<String, Double> economyByBowler = new HashMap<>();
         for (String bowler : runsByBowler.keySet()) {
             int runs  = runsByBowler.get(bowler);
             int balls = ballsByBowler.getOrDefault(bowler, 0);
@@ -167,4 +167,72 @@ public class Analysis {
             if (++count == 10) break;
         }
     }
+
+    public void highestStrikeRateAgainstRCB(List<Match> matches,List<Delivery> deleveries){
+
+        HashMap<Integer, String> matchVenue = new HashMap<>();
+
+        for(Match m : matches){
+            if(m.season == 2016 && (m.team1.equals("Royal Challengers Bangalore") || m.team2.equals("Royal Challengers Bangalore"))){
+                    matchVenue.put(m.id, m.venue);
+            }
+        }
+
+        HashMap<String, HashMap<String, Integer>> runsMap = new HashMap<>();
+
+        HashMap<String, HashMap<String, Integer>> ballsMap = new HashMap<>();
+
+        for(Delivery d : deleveries){
+            if(matchVenue.containsKey(d.matchId)){
+                if(d.bowlingTeam.equals("Royal Challengers Bangalore")){
+                    String venue = matchVenue.get(d.matchId);
+
+                    runsMap.putIfAbsent(venue, new HashMap<>());
+
+                    ballsMap.putIfAbsent(venue, new HashMap<>());
+
+                    HashMap<String, Integer> run = runsMap.get(venue);
+                    HashMap<String, Integer>  ball = ballsMap.get(venue);
+
+                    run.put(d.batsman, run.getOrDefault(d.batsman, 0) + d.batsmanRuns);
+
+                    if(d.wideRuns == 0){
+                        ball.put(d.batsman, ball.getOrDefault(d.batsman, 0) + 1);
+                    }
+                }
+            }
+        }
+
+        System.out.println("Highest Strike Rate Against RCB By Venue (2016): ");
+
+        for(String venue : runsMap.keySet()){
+        
+            HashMap<String, Integer> run = runsMap.get(venue);
+            HashMap<String, Integer> ball = ballsMap.get(venue);
+
+            String bestPlayer = "";
+            double bestSR = 0;
+
+
+            for(String batsman : run.keySet()){
+
+                int runs = run.get(batsman);
+                int balls = ball.getOrDefault(batsman, 0);
+
+                if(balls > 0){
+                    double sr = (runs * 100.0) / balls;
+
+                    if(sr > bestSR){
+                        bestSR = sr;
+                        bestPlayer = batsman;
+                    }
+                }
+            }
+
+            System.out.printf("%s -> %s -> %.2f SR%n", venue, bestPlayer, bestSR);
+        }
+    }
+
 }
+
+
